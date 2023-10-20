@@ -6,6 +6,7 @@ import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import toast from 'react-hot-toast'
 
 import { Loader } from '@/components/loader'
 import { Button } from '@/components/ui/button'
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import toast from 'react-hot-toast'
 
 type NewInventory = z.infer<typeof newInventorySchema>
 
@@ -35,17 +35,16 @@ export function InventoryForm() {
   })
 
   const {
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = form
 
   async function onSubmit(data: NewInventory): Promise<void> {
     try {
-      console.log(data)
       const response = await axios.post('/api/inventories', data)
 
       if (response.status === 201) {
-        form.reset()
         toast.success('Estoque criado')
+        router.push(`/inventories/${response.data.id}`)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -102,7 +101,11 @@ export function InventoryForm() {
         />
 
         <div className="w-full flex justify-end">
-          <Button type="submit" disabled={isSubmitting} className="px-14">
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isValid}
+            className="px-14"
+          >
             {isSubmitting ? <Loader /> : 'Enviar'}
           </Button>
         </div>

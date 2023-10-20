@@ -1,0 +1,28 @@
+import { prisma } from '@/lib/prisma';
+import { auth } from '@clerk/nextjs';
+import { NextResponse } from 'next/server';
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { inventoryId: string; productId: string } },
+) {
+  try {
+    const { userId } = auth()
+
+    if (!userId) {
+      return new NextResponse('Não autorizado', { status: 401 })
+    }
+
+    await prisma.product.delete({
+      where: {
+        id: params.productId,
+        inventoryId: params.inventoryId,
+      },
+    })
+
+    return NextResponse.json(null, { status: 200 })
+  } catch (error) {
+    console.log('[PRODUCT_ERROR]', error)
+    return new NextResponse('Internal server error')
+  }
+}

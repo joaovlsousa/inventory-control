@@ -12,18 +12,24 @@ model Inventory {
   name        String
   description String?
   userId      String
-  products    Product[] @relation(onDelete: Cascade)
+  products    Product[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
+enum TypeQuantity {
+  KG
+  UN
+}
+
 model Product {
-  id          String    @id @default(uuid())
-  name        String
-  quantity    Int
-  price       Float
-  inventoryId String
-  inventory   Inventory @relation(fields: [inventoryId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id           String       @id @default(uuid())
+  name         String
+  quantity     Float
+  typeQuantity TypeQuantity
+  price        Float
+  inventoryId  String
+  inventory    Inventory    @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }

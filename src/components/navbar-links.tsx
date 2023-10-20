@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 
 const links = [
   {
-    label: 'Dashboard',
-    href: '/dashboard',
+    label: 'Estoques',
+    href: '/inventories',
   },
   {
     label: 'Vendas',
@@ -26,7 +26,9 @@ export function NavbarLinks() {
           href={link.href}
           className={cn(
             'font-normal',
-            link.href === pathname ? 'font-medium' : 'text-muted-foreground',
+            link.href === pathname || pathname.startsWith(link.href)
+              ? 'font-medium'
+              : 'text-muted-foreground',
           )}
         >
           {link.label}

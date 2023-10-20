@@ -7,6 +7,6 @@ declare global {
 
 export const prisma = globalThis.prisma || new PrismaClient()
 
-if (globalThis.prisma === undefined) {
+if (process.env.NODE_ENV !== 'production') {
   globalThis.prisma = new PrismaClient()
 }

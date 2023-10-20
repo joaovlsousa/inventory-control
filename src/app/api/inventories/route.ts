@@ -10,6 +10,7 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse('Unauthenticated', { status: 401 })
     }
+
     const body = await req.json()
     const { name, description } = newInventorySchema.parse(body)
 
@@ -23,6 +24,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(inventory, { status: 201 })
   } catch (error) {
-    return new NextResponse(`[INVENTORY_ERROR]: ${error}`, { status: 500 })
+    return new NextResponse(`[INVENTORY_POST_ERROR]: ${error}`, { status: 500 })
   }
 }
