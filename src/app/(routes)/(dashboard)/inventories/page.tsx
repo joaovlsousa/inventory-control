@@ -13,8 +13,8 @@ import {
 } from '@/components/ui/dialog'
 import { PlusIcon } from '@radix-ui/react-icons'
 
-import { InventoryCard } from './components/inventory-card'
-import { InventoryForm } from './components/inventory-form'
+import { InventoryCard } from './_components/inventory-card'
+import { InventoryForm } from './_components/inventory-form'
 
 export default async function DashboardPage() {
   const { userId } = auth()

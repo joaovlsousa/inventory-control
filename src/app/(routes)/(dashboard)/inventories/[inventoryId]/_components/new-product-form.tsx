@@ -30,7 +30,7 @@ import { newProductSchema } from '@/contracts'
 
 type NewProduct = z.infer<typeof newProductSchema>
 
-export function ProductForm() {
+export function NewProductForm() {
   const router = useRouter()
   const params = useParams()
 

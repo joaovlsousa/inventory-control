@@ -1,19 +1,12 @@
-import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
+
 import { prisma } from '@/lib/prisma'
 import { formatPrice } from '@/lib/utils'
-import { PlusIcon } from '@radix-ui/react-icons'
-import { columns } from '../components/columns'
-import { ProductForm } from '../components/product-form'
+
+import { columns } from './_components/columns'
+import { NewProductCard } from './_components/new-product-card'
+import { UpdateProductCard } from './_components/update-product-card'
 
 export default async function InventoyPage({
   params,
@@ -36,7 +29,9 @@ export default async function InventoyPage({
   const dataProducts = products.map((product) => ({
     id: product.id,
     name: product.name,
-    quantity: `${product.quantity} ${product.typeQuantity.toLowerCase()}`,
+    quantity: `${product.quantity} ${
+      product.typeQuantity === 'KG' ? 'Quilogramas' : 'Unidades'
+    }`,
     price: formatPrice(product.price),
   }))
 
@@ -47,23 +42,10 @@ export default async function InventoyPage({
           <h1 className="text-2xl font-bold">{name}</h1>
           <p className="text-sm text-muted-foreground">{description ?? ''}</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Novo produto
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Novo produto</DialogTitle>
-              <DialogDescription>
-                Adicione um novo produto ao seu estoque.
-              </DialogDescription>
-            </DialogHeader>
-            <ProductForm />
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center gap-x-3">
+          <UpdateProductCard data={products} />
+          <NewProductCard />
+        </div>
       </div>
       <Separator />
       <div className="pt-10 flex justify-center items-center">
